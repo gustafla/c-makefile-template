@@ -1,7 +1,10 @@
 TARGET=application
+PREFIX=~/.local
 CC=gcc
 PKGS=
-CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -O2 -s
+CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall
+release:CFLAGS+=-O2 -s
+debug:CFLAGS+=-Og -g
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
 
 SOURCES=main.c
@@ -13,7 +16,14 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: clean
+.PHONY: clean install debug release
+
+debug: $(TARGET)
+
+release: $(TARGET)
 
 clean:
 	rm -f $(TARGET) $(OBJS)
+
+install: $(TARGET)
+	cp $(TARGET) $(PREFIX)/bin
