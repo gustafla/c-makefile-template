@@ -6,7 +6,7 @@ CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall
 release:CFLAGS+=-O2 -s
 debug:CFLAGS+=-Og -g -fbounds-check -fno-omit-frame-pointer
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
-debug:LDLIBS+=-lasan
+debug:LDLIBS+=-fsanitize=address -lasan
 
 SOURCES=main.c
 OBJS=$(patsubst %.c,%.o,$(SOURCES))
