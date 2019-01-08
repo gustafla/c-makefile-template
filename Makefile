@@ -8,7 +8,7 @@ debug:CFLAGS+=-Og -g -fbounds-check -fno-omit-frame-pointer
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
 debug:LDLIBS+=-fsanitize=address -lasan
 
-SOURCES:=main.c
+SOURCES:=$(wildcard src/*.c)
 OBJS=$(patsubst %.c,%.o,$(SOURCES))
 
 $(TARGET): $(OBJS)
