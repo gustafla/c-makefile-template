@@ -1,27 +1,33 @@
-TARGET:=application
+DEBUG?=1
+
+ifeq ($(DEBUG), 1)
+BUILDDIR:=debug
+CFLAGS:=-Og -g -fbounds-check -fno-omit-frame-pointer
+LDLIBS:=-fsanitize=address -lasan
+else
+BUILDDIR:=release
+CFLAGS:=-O2 -s
+endif
+
+TARGET:=$(BUILDDIR)/application
 PREFIX:=~/.local
 CC:=gcc
 PKGS:=
 CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall
-release:CFLAGS+=-O2 -s
-debug:CFLAGS+=-Og -g -fbounds-check -fno-omit-frame-pointer
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
-debug:LDLIBS+=-fsanitize=address -lasan
 
 SOURCES:=$(wildcard src/*.c)
-OBJS=$(patsubst %.c,%.o,$(SOURCES))
+OBJS:=$(patsubst %.c,%.o,$(SOURCES:src/%=$(BUILDDIR)/%))
 
 $(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LDLIBS)
+	$(info Linking $@)
+	@$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LDLIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(BUILDDIR)/%.o: $(SOURCES)
+	$(info Compiling $<)
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: clean install debug release
-
-debug: $(TARGET)
-
-release: $(TARGET)
+.PHONY: clean install
 
 clean:
 	rm -f $(TARGET) $(OBJS)
