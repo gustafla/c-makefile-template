@@ -2,8 +2,7 @@ DEBUG?=1
 
 ifeq ($(DEBUG), 1)
 BUILDDIR:=debug
-CFLAGS:=-Og -g -fbounds-check -fno-omit-frame-pointer
-LDLIBS:=-fsanitize=address -lasan
+CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 else
 BUILDDIR:=release
 CFLAGS:=-O2 -s
@@ -13,7 +12,7 @@ TARGET:=$(BUILDDIR)/application
 PREFIX:=~/.local
 CC:=gcc
 PKGS:=
-CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall
+CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall -Wextra -Wpedantic
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
 
 SOURCES:=$(wildcard src/*.c)
