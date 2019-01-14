@@ -1,11 +1,11 @@
 DEBUG?=1
 
-ifeq ($(DEBUG), 1)
-BUILDDIR:=debug
-CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
-else
+ifeq ($(DEBUG), 0)
 BUILDDIR:=release
 CFLAGS:=-O2 -s -fno-plt -Wl,-O2,--sort-common,--as-needed,-z,relro,-z,now
+else
+BUILDDIR:=debug
+CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 endif
 
 TARGET:=$(BUILDDIR)/application
