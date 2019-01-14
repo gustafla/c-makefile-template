@@ -5,7 +5,7 @@ BUILDDIR:=debug
 CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 else
 BUILDDIR:=release
-CFLAGS:=-O2 -s
+CFLAGS:=-O2 -s -fno-plt -Wl,-O2,--sort-common,--as-needed,-z,relro,-z,now
 endif
 
 TARGET:=$(BUILDDIR)/application
