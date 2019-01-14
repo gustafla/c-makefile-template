@@ -20,10 +20,12 @@ OBJS:=$(patsubst %.c,%.o,$(SOURCES:src/%=$(BUILDDIR)/%))
 
 $(TARGET): $(OBJS)
 	$(info Linking $@)
+	@mkdir -p $(@D)
 	@$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LDLIBS)
 
 $(BUILDDIR)/%.o: $(SOURCES)
 	$(info Compiling $<)
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY: clean install
