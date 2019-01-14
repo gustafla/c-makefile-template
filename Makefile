@@ -1,5 +1,6 @@
 DEBUG?=1
 
+# debug and release build flags
 ifeq ($(DEBUG), 0)
 BUILDDIR:=release
 CFLAGS:=-O2 -s -fno-plt -Wl,-O2,--sort-common,--as-needed,-z,relro,-z,now
@@ -8,12 +9,19 @@ BUILDDIR:=debug
 CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 endif
 
+# basic configuration
 TARGET:=$(BUILDDIR)/application
 PREFIX:=~/.local
 CC:=gcc
+CFLAGS+= -std=c99 -Wall -Wextra -Wpedantic
+
+# library packages for pkg-config
 PKGS:=
-CFLAGS+=$(shell pkg-config --cflags $(PKGS)) -std=c99 -Wall -Wextra -Wpedantic
+
+ifneq ($(strip $(PKGS)),)
+CFLAGS+=$(shell pkg-config --cflags $(PKGS))
 LDLIBS+=$(shell pkg-config --libs $(PKGS))
+endif
 
 SOURCES:=$(wildcard src/*.c)
 OBJS:=$(patsubst %.c,%.o,$(SOURCES:src/%=$(BUILDDIR)/%))
