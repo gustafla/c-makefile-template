@@ -31,7 +31,7 @@ $(TARGET): $(OBJS)
 	@mkdir -p $(@D)
 	@$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LDLIBS)
 
-$(BUILDDIR)/%.o: $(SOURCES)
+$(BUILDDIR)/%.o: src/%.o
 	$(info Compiling $<)
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c -o $@ $<
