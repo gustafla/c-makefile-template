@@ -1,2 +1,2 @@
-application
-*.o
+debug/
+release/
