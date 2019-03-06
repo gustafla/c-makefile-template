@@ -39,7 +39,7 @@ $(BUILDDIR)/%.o: src/%.c
 .PHONY: clean install
 
 clean:
-	rm -f $(TARGET) $(OBJS)
+	rm -rf $(BUILDDIR)
 
 install: $(TARGET)
 	cp $(TARGET) $(PREFIX)/bin
