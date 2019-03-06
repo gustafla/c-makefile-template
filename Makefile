@@ -6,14 +6,14 @@ BUILDDIR:=release
 CFLAGS:=-O2 -s -fno-plt -Wl,-O2,--sort-common,--as-needed,-z,relro,-z,now
 else
 BUILDDIR:=debug
-CFLAGS:=-Og -g -fbounds-check -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
+CFLAGS:=-Og -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 endif
 
 # basic configuration
 TARGET:=$(BUILDDIR)/application
 PREFIX:=~/.local
 CC:=gcc
-CFLAGS+= -std=c99 -Wall -Wextra -Wpedantic
+CFLAGS+=-std=c99 -Wall -Wextra -Wpedantic
 
 # library packages for pkg-config
 PKGS:=
