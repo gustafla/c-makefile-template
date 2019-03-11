@@ -42,7 +42,10 @@ $(TARGET): $(OBJS)
 	$(info Linking $@)
 	@mkdir -p $(@D)
 	@$(CC) -o $(TARGET) $(CFLAGS) $(OBJS) $(LDLIBS)
+ifeq ($(DEBUG),0)
+	$(info Stripping $@)
 	@$(STRIP) $(TARGET)
+endif
 
 $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
 	$(info Compiling $<)
